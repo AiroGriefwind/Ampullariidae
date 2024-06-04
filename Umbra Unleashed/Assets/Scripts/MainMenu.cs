@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+//************** use UnityOSC namespace...
+using UnityOSC;
+//****************************************************************
+
 public class MainMenu : MonoBehaviour
 {
     public GameObject mainMenu;
@@ -13,6 +17,13 @@ public class MainMenu : MonoBehaviour
     private void Start() {
         creditsMenu.SetActive(false);
         mainMenu.SetActive(true);
+
+        //************* Instantiate the OSC Handler...
+	    OSCHandler.Instance.Init ();
+		OSCHandler.Instance.SendMessageToClient ("pd", "/unity/trigger", "ready");
+		OSCHandler.Instance.SendMessageToClient ("pd", "/unity/gamestart", 1);
+        OSCHandler.Instance.SendMessageToClient("pd", "/unity/playseq", 1);
+        //****************************************
     }
 
     public void ShowMain() {
