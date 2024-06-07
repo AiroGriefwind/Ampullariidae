@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+//************** use UnityOSC namespace...
+using UnityOSC;
+//****************************************************************
+
 public class PlayerProjectileAttack : MonoBehaviour
 {
     public GameObject projectile; // public GameObject to select in the inspector
@@ -15,10 +19,16 @@ public class PlayerProjectileAttack : MonoBehaviour
     string playerDirection;
     public GameObject meleeHitbox;
     //[SerializeField] private Cooldown cooldown;
+    
+    
     // Start is called before the first frame update
     void Start()
     {
         meleeHitbox = transform.Find("attackHitbox").gameObject;
+
+        //************* Instantiate the OSC Handler...
+	    OSCHandler.Instance.Init ();
+        //****************************************
     }
 
     // Update is called once per frame
@@ -28,6 +38,9 @@ public class PlayerProjectileAttack : MonoBehaviour
        if(Input.GetKeyDown(KeyCode.Alpha1)) // key code for 1 on the top of the keyboard
         {
             Debug.Log("1 is being pressed.");
+            //************* Send OSC message to PD...
+            OSCHandler.Instance.SendMessageToClient("pd", "/unity/playerAttack", 1);
+            //****************************************
             CastSpell();
         }
 

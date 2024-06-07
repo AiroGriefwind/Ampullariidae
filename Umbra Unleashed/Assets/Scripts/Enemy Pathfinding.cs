@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+//************** use UnityOSC namespace...
+using UnityOSC;
+//****************************************************************
+
 public class EnemyPathfinding : MonoBehaviour
 {
     public Transform player;
@@ -42,6 +46,10 @@ public class EnemyPathfinding : MonoBehaviour
         attackHitbox = transform.Find("attackHitbox").gameObject;
         transform.forward = new Vector3(0, 0, 0);
         coinManager = GameObject.Find("CoinManager");
+
+        //************* Instantiate the OSC Handler...
+	    OSCHandler.Instance.Init ();
+        //****************************************
     }
     // Update is called once per frame
     void Update()
@@ -97,6 +105,9 @@ public class EnemyPathfinding : MonoBehaviour
     void die()
     {
         enemyCountManager.decrement();
+        //************* Send OSC message to PD...
+            OSCHandler.Instance.SendMessageToClient("pd", "/unity/gemDrop", 1);
+        //****************************************
         Instantiate(gemList[Random.Range(0, 4)], transform.position, Quaternion.identity); 
 
         gameObject.SetActive(false);
@@ -111,6 +122,9 @@ public class EnemyPathfinding : MonoBehaviour
         yield return new WaitForSeconds(stateInfo.length);
 
         animator.Play("attack");
+        //************* Send OSC message to PD...
+            OSCHandler.Instance.SendMessageToClient("pd", "/unity/mobAttack", 1);
+        //****************************************
         attackHitbox.SetActive(true);
         stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         yield return new WaitForSeconds(stateInfo.length);
@@ -134,6 +148,9 @@ public class EnemyPathfinding : MonoBehaviour
         // Apply the force in the calculated direction
         rb.AddForce(direction * knockbackForce, ForceMode.Impulse);
         animator.Play("takeDammage");
+        //************* Send OSC message to PD...
+            OSCHandler.Instance.SendMessageToClient("pd", "/unity/mobHurt", 1);
+        //****************************************
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         yield return new WaitForSeconds(stateInfo.length);
         state = IDLE;

@@ -31,6 +31,9 @@ public class MainMenu : MonoBehaviour
     }
 
     public void StartGame() {
+        //************* Send OSC message to PD...
+            OSCHandler.Instance.SendMessageToClient("pd", "/unity/buttonClicked", 1);
+        //****************************************
         SceneManager.LoadScene(sceneIndex);
     }
 
@@ -39,16 +42,25 @@ public class MainMenu : MonoBehaviour
     }
 
     public void ShowCredits() {
+        //************* Send OSC message to PD...
+           OSCHandler.Instance.SendMessageToClient("pd", "/unity/buttonClicked", 1);
+        //****************************************
         creditsMenu.SetActive(true);
     }
 
     public void HideCredits() {
+        //************* Send OSC message to PD...
+           OSCHandler.Instance.SendMessageToClient("pd", "/unity/buttonClicked", 1);
+        //****************************************
         creditsMenu.SetActive(false);
     }
 
    public void QuitGame()
     {
         Debug.Log("quitting application");
+        //************* Send OSC message to PD...
+           OSCHandler.Instance.SendMessageToClient("pd", "/unity/buttonClicked", 1);
+        //****************************************
         Application.Quit();
     }
 }
