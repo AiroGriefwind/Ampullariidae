@@ -22,7 +22,7 @@ public class MainMenu : MonoBehaviour
 	    OSCHandler.Instance.Init ();
 		OSCHandler.Instance.SendMessageToClient ("pd", "/unity/trigger", "ready");
 		OSCHandler.Instance.SendMessageToClient ("pd", "/unity/gamestart", 1);
-        OSCHandler.Instance.SendMessageToClient("pd", "/unity/playseq", 1);
+        OSCHandler.Instance.SendMessageToClient("pd", "/unity/tempo", 400);
         //****************************************
     }
 
@@ -33,6 +33,7 @@ public class MainMenu : MonoBehaviour
     public void StartGame() {
         //************* Send OSC message to PD...
             OSCHandler.Instance.SendMessageToClient("pd", "/unity/buttonClicked", 1);
+            OSCHandler.Instance.SendMessageToClient("pd", "/unity/tempo", 220);
         //****************************************
         SceneManager.LoadScene(sceneIndex);
     }
